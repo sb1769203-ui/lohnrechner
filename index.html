@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1c2333">
+<title>Lohnrechner</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="sheet__head">
+    <div class="tear"></div>
+    <div class="head__row">
+      <button id="prevMonth" class="nav" aria-label="Vorheriger Monat">‹</button>
+      <div class="head__title">
+        <span class="eyebrow">Lohnrechner</span>
+        <span id="monthLabel" class="month">August 2026</span>
+      </div>
+      <button id="nextMonth" class="nav" aria-label="Nächster Monat">›</button>
+    </div>
+  </header>
+
+  <section class="block">
+    <div class="field">
+      <label for="rate">Stundenlohn</label>
+      <div class="field__input">
+        <input id="rate" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00">
+        <span class="unit">€/h</span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="hours">Stunden</label>
+      <div class="field__input">
+        <input id="hours" type="number" inputmode="decimal" step="0.25" min="0" placeholder="0">
+        <span class="unit">h</span>
+      </div>
+    </div>
+    <div class="line line--sum">
+      <span>Grundlohn</span>
+      <span id="baseWage" class="tabular">0,00 €</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block__title">Zusatzeinnahmen</h2>
+    <ul id="extrasList" class="extras"></ul>
+
+    <form id="extraForm" class="extra-form">
+      <input id="extraLabel" type="text" placeholder="Bezeichnung, z. B. Provision" required maxlength="40">
+      <input id="extraAmount" type="number" inputmode="decimal" step="0.01" placeholder="0,00">
+      <button type="submit" class="add">+</button>
+    </form>
+  </section>
+
+  <section class="total">
+    <span class="total__label">Gesamt</span>
+    <span id="totalAmount" class="total__amount tabular">0,00 €</span>
+  </section>
+
+  <p id="offlineNote" class="offline-note" hidden>Offline — Änderungen werden lokal gespeichert.</p>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

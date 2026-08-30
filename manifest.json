@@ -1,0 +1,14 @@
+{
+  "name": "Lohnrechner",
+  "short_name": "Lohnrechner",
+  "description": "Monatslohn aus Stundenlohn, Stunden und Zusatzeinnahmen berechnen.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1c2333",
+  "theme_color": "#1c2333",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
