@@ -12,6 +12,7 @@
   const dayHoursEl = document.getElementById('dayHours');
   const workedHoursEl = document.getElementById('workedHours');
   const remainingHoursEl = document.getElementById('remainingHours');
+  const avgPerWorkdayEl = document.getElementById('avgPerWorkday');
   const progressFillEl = document.getElementById('progressFill');
   const paceNoteEl = document.getElementById('paceNote');
   const totalAmountEl = document.getElementById('totalAmount');
@@ -146,6 +147,12 @@
     const pct = targetHours > 0 ? Math.min(100, (workedHours / targetHours) * 100) : 0;
     progressFillEl.style.width = `${pct}%`;
 
+    const monthStart = new Date(current.getFullYear(), current.getMonth(), 1);
+    const monthEnd = new Date(current.getFullYear(), current.getMonth() + 1, 0);
+    const totalWorkdaysInMonth = countWorkdaysInclusive(monthStart, monthEnd);
+    const avgPerWorkday = targetHours > 0 && totalWorkdaysInMonth > 0 ? targetHours / totalWorkdaysInMonth : 0;
+    avgPerWorkdayEl.textContent = hoursFmt(avgPerWorkday);
+
     if (targetHours <= 0) {
       paceNoteEl.textContent = 'Trag dein Zielstunden ein, um deine Tagesempfehlung zu sehen.';
       paceNoteEl.classList.remove('done');
@@ -159,8 +166,6 @@
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const monthStart = new Date(current.getFullYear(), current.getMonth(), 1);
-    const monthEnd = new Date(current.getFullYear(), current.getMonth() + 1, 0);
 
     let rangeStart = null;
     if (monthEnd < today) {
