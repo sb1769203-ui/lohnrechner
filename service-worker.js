@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lohnrechner-v15';
+const CACHE_NAME = 'lohnrechner-v16';
 const ASSETS = [
   './',
   './index.html',

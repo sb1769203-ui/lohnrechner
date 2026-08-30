@@ -24,6 +24,55 @@
   const nextMonthBtn = document.getElementById('nextMonth');
   const offlineNote = document.getElementById('offlineNote');
   const themeToggle = document.getElementById('themeToggle');
+  const splashEl = document.getElementById('splash');
+  const splashGreetingEl = document.getElementById('splashGreeting');
+
+  // ---------- Sound-System ----------
+  let audioCtx = null;
+  function getAudioCtx() {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    if (!audioCtx) audioCtx = new Ctx();
+    if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    return audioCtx;
+  }
+  function playNote(ctx, freq, start, dur, type, peak) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    const t0 = ctx.currentTime + start;
+    gain.gain.setValueAtTime(0, t0);
+    gain.gain.linearRampToValueAtTime(peak || 0.1, t0 + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.05);
+  }
+  function playWelcomeChime() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    // warmer Zwei-Ton-Willkommensklang, passend zum Violett-Grün-Verlauf
+    playNote(ctx, 880, 0, 0.9, 'sine', 0.1);      // A5
+    playNote(ctx, 1108.73, 0.13, 0.85, 'sine', 0.09); // C#6
+  }
+  const TAB_SOUNDS = {
+    home: (ctx) => {
+      playNote(ctx, 987.77, 0, 0.16, 'sine', 0.08); // klarer, ruhiger Tipp-Ton
+    },
+    history: (ctx) => {
+      // sanftes Zurückblättern: zwei ruhige, absteigende Töne
+      playNote(ctx, 659.25, 0, 0.2, 'sine', 0.07);
+      playNote(ctx, 523.25, 0.09, 0.26, 'sine', 0.06);
+    },
+  };
+  function playTabSound(tab) {
+    const ctx = getAudioCtx();
+    if (!ctx || !TAB_SOUNDS[tab]) return;
+    TAB_SOUNDS[tab](ctx);
+  }
+  // ---------- Ende Sound-System ----------
   const historyListEl = document.getElementById('historyList');
   const tabHomeBtn = document.getElementById('tabHome');
   const tabHistoryBtn = document.getElementById('tabHistory');
@@ -338,6 +387,7 @@
     tabHomeBtn.classList.toggle('is-active', isHome);
     tabHistoryBtn.classList.toggle('is-active', !isHome);
     if (!isHome) renderHistory();
+    playTabSound(tab);
   }
   tabHomeBtn.addEventListener('click', () => switchTab('home'));
   tabHistoryBtn.addEventListener('click', () => switchTab('history'));
@@ -375,6 +425,20 @@
   updateOfflineNote();
 
   renderAll();
+
+  function showSplash() {
+    const hour = new Date().getHours();
+    const greeting = hour < 11 ? 'Guten Morgen' : hour < 18 ? 'Guten Tag' : 'Guten Abend';
+    splashGreetingEl.textContent = greeting;
+
+    playWelcomeChime();
+
+    setTimeout(() => {
+      splashEl.classList.add('is-hidden');
+      setTimeout(() => splashEl.remove(), 700);
+    }, 2000);
+  }
+  showSplash();
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
