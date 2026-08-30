@@ -83,7 +83,8 @@
 
     <form id="dayForm" class="extra-form">
       <input id="dayDate" type="date" required>
-      <input id="dayHours" type="number" inputmode="decimal" step="0.25" min="0" placeholder="Std.">
+      <input id="dayHoursInt" type="number" inputmode="numeric" step="1" min="0" placeholder="Std." class="time-part">
+      <input id="dayMinutes" type="number" inputmode="numeric" step="1" min="0" max="59" placeholder="Min." class="time-part">
       <button type="submit" class="add">+</button>
     </form>
   </section>

@@ -374,6 +374,10 @@ body {
   transition: border-color 0.2s ease;
 }
 
+.extra-form input.time-part {
+  width: 58px;
+}
+
 .extra-form input:focus {
   outline: none;
   border-color: var(--accent-1);

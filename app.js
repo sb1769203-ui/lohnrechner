@@ -9,7 +9,8 @@
   const daysListEl = document.getElementById('daysList');
   const dayForm = document.getElementById('dayForm');
   const dayDateEl = document.getElementById('dayDate');
-  const dayHoursEl = document.getElementById('dayHours');
+  const dayHoursIntEl = document.getElementById('dayHoursInt');
+  const dayMinutesEl = document.getElementById('dayMinutes');
   const workedHoursEl = document.getElementById('workedHours');
   const remainingHoursEl = document.getElementById('remainingHours');
   const avgPerWorkdayEl = document.getElementById('avgPerWorkday');
@@ -26,6 +27,12 @@
   const weekdayShort = ['So','Mo','Di','Mi','Do','Fr','Sa'];
   const money = (n) => (Number.isFinite(n) ? n : 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
   const hoursFmt = (n) => (Number.isFinite(n) ? n : 0).toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' h';
+  const hmFmt = (decimalHours) => {
+    const totalMinutes = Math.round((Number.isFinite(decimalHours) ? decimalHours : 0) * 60);
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return m === 0 ? `${h} Std` : `${h} Std ${m} Min`;
+  };
   const storeKey = (d) => `lohnrechner:${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   const pad2 = (n) => String(n).padStart(2, '0');
   const toDateKey = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
@@ -99,7 +106,7 @@
       `;
       li.querySelector('.day-weekday').textContent = weekdayShort[dow];
       li.querySelector('.extra-name').textContent = `${pad2(dateObj.getDate())}.${pad2(dateObj.getMonth() + 1)}.${isWeekend ? ' (Ausnahme)' : ''}`;
-      li.querySelector('.extra-amount').textContent = hoursFmt(entry.hours);
+      li.querySelector('.extra-amount').textContent = hmFmt(entry.hours);
       li.querySelector('.remove').addEventListener('click', () => {
         data.days.splice(entry.i, 1);
         saveMonth(current, data);
@@ -238,7 +245,9 @@
   dayForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const dateKey = dayDateEl.value;
-    const hours = parseFloat(dayHoursEl.value.replace(',', '.')) || 0;
+    const h = parseInt(dayHoursIntEl.value, 10) || 0;
+    const m = parseInt(dayMinutesEl.value, 10) || 0;
+    const hours = h + (m / 60);
     if (!dateKey || hours <= 0) return;
     const existing = data.days.find((d) => d.date === dateKey);
     if (existing) {
@@ -247,8 +256,9 @@
       data.days.push({ date: dateKey, hours });
     }
     saveMonth(current, data);
-    dayHoursEl.value = '';
-    dayHoursEl.focus();
+    dayHoursIntEl.value = '';
+    dayMinutesEl.value = '';
+    dayHoursIntEl.focus();
     renderDays();
     renderTotals();
   });
