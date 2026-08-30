@@ -36,6 +36,13 @@
     </div>
   </header>
 
+  <nav class="tabs">
+    <button id="tabHome" class="tab-btn is-active" data-tab="home">Startseite</button>
+    <button id="tabHistory" class="tab-btn" data-tab="history">Verlauf</button>
+  </nav>
+
+  <div id="pageHome" class="page">
+
   <section class="block">
     <h2 class="block__title">Fortschritt</h2>
     <div class="progress-bar"><div id="progressFill" class="progress-bar__fill"></div></div>
@@ -94,11 +101,6 @@
     </div>
   </section>
 
-  <section class="block">
-    <h2 class="block__title">Verlauf</h2>
-    <ul id="historyList" class="extras extras--history"></ul>
-  </section>
-
   <div class="sheet__foot-spacer"></div>
 
   <section class="block">
@@ -118,6 +120,16 @@
       </div>
     </div>
   </section>
+
+  </div>
+
+  <div id="pageHistory" class="page" hidden>
+    <section class="block">
+      <h2 class="block__title">Verlauf</h2>
+      <ul id="historyList" class="extras extras--history"></ul>
+    </section>
+    <div class="sheet__foot-spacer"></div>
+  </div>
 
   <p id="offlineNote" class="offline-note" hidden>Offline — Änderungen werden lokal gespeichert.</p>
 

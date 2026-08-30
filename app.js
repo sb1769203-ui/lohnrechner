@@ -25,6 +25,10 @@
   const offlineNote = document.getElementById('offlineNote');
   const themeToggle = document.getElementById('themeToggle');
   const historyListEl = document.getElementById('historyList');
+  const tabHomeBtn = document.getElementById('tabHome');
+  const tabHistoryBtn = document.getElementById('tabHistory');
+  const pageHomeEl = document.getElementById('pageHome');
+  const pageHistoryEl = document.getElementById('pageHistory');
 
   const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
   const weekdayShort = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -316,6 +320,17 @@
 
   prevMonthBtn.addEventListener('click', () => switchMonth(-1));
   nextMonthBtn.addEventListener('click', () => switchMonth(1));
+
+  function switchTab(tab) {
+    const isHome = tab === 'home';
+    pageHomeEl.hidden = !isHome;
+    pageHistoryEl.hidden = isHome;
+    tabHomeBtn.classList.toggle('is-active', isHome);
+    tabHistoryBtn.classList.toggle('is-active', !isHome);
+    if (!isHome) renderHistory();
+  }
+  tabHomeBtn.addEventListener('click', () => switchTab('home'));
+  tabHistoryBtn.addEventListener('click', () => switchTab('history'));
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);

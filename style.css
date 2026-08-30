@@ -186,6 +186,46 @@ body {
   letter-spacing: -0.01em;
 }
 
+.tabs {
+  display: flex;
+  gap: 6px;
+  padding: 2px;
+  margin: 4px 4px 2px;
+  background: var(--surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.tab-btn {
+  flex: 1;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 10px 0;
+  border-radius: calc(var(--radius-md) - 4px);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tab-btn.is-active {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  box-shadow: 0 6px 16px var(--accent-1-soft);
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .block {
   background: var(--surface);
   backdrop-filter: blur(18px);
