@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f4f5fb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Lohnrechner</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -43,16 +45,43 @@
       </div>
     </div>
     <div class="field">
-      <label for="hours">Stunden</label>
+      <label for="hours">Zielstunden (Monat)</label>
       <div class="field__input">
         <input id="hours" type="number" inputmode="decimal" step="0.25" min="0" placeholder="0">
         <span class="unit">h</span>
       </div>
     </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block__title">Fortschritt</h2>
+    <div class="progress-bar"><div id="progressFill" class="progress-bar__fill"></div></div>
+    <div class="progress-stats">
+      <div class="progress-stat">
+        <span class="progress-stat__label">Gearbeitet</span>
+        <span id="workedHours" class="progress-stat__value tabular">0 h</span>
+      </div>
+      <div class="progress-stat">
+        <span class="progress-stat__label">Verbleibend</span>
+        <span id="remainingHours" class="progress-stat__value tabular">0 h</span>
+      </div>
+    </div>
+    <p id="paceNote" class="pace-note">Trag dein Zielstunden ein, um deine Tagesempfehlung zu sehen.</p>
     <div class="line line--sum">
       <span>Grundlohn</span>
       <span id="baseWage" class="tabular">0,00 €</span>
     </div>
+  </section>
+
+  <section class="block">
+    <h2 class="block__title">Tageseinträge</h2>
+    <ul id="daysList" class="extras"></ul>
+
+    <form id="dayForm" class="extra-form">
+      <input id="dayDate" type="date" required>
+      <input id="dayHours" type="number" inputmode="decimal" step="0.25" min="0" placeholder="Std.">
+      <button type="submit" class="add">+</button>
+    </form>
   </section>
 
   <section class="block">
@@ -65,6 +94,8 @@
       <button type="submit" class="add">+</button>
     </form>
   </section>
+
+  <div class="sheet__foot-spacer"></div>
 
   <section class="total">
     <div class="total__inner">
