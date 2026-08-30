@@ -24,6 +24,7 @@
   const nextMonthBtn = document.getElementById('nextMonth');
   const offlineNote = document.getElementById('offlineNote');
   const themeToggle = document.getElementById('themeToggle');
+  const historyListEl = document.getElementById('historyList');
 
   const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
   const weekdayShort = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -134,6 +135,7 @@
   let lastTotal = null;
 
   function renderTotals() {
+    renderHistory();
     const rate = parseFloat(rateEl.value.replace(',', '.')) || 0;
     const targetHours = parseFloat(hoursEl.value.replace(',', '.')) || 0;
     const workedHours = data.days.reduce((sum, d) => sum + (Number(d.hours) || 0), 0);
@@ -220,6 +222,44 @@
     renderExtras();
     renderDays();
     renderTotals();
+  }
+
+  function renderHistory() {
+    const months = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      const match = key && key.match(/^lohnrechner:(\d{4})-(\d{2})$/);
+      if (!match) continue;
+      const year = Number(match[1]);
+      const monthIndex = Number(match[2]) - 1;
+      let entry;
+      try {
+        entry = JSON.parse(localStorage.getItem(key));
+      } catch {
+        continue;
+      }
+      const rate = parseFloat(String(entry.rate ?? '').replace(',', '.')) || 0;
+      const workedHours = Array.isArray(entry.days) ? entry.days.reduce((sum, d) => sum + (Number(d.hours) || 0), 0) : 0;
+      const extrasSum = Array.isArray(entry.extras) ? entry.extras.reduce((sum, e) => sum + (Number(e.amount) || 0), 0) : 0;
+      const total = (rate * workedHours) + extrasSum;
+      if (total <= 0) continue;
+      months.push({ year, monthIndex, total });
+    }
+    months.sort((a, b) => (b.year - a.year) || (b.monthIndex - a.monthIndex));
+
+    historyListEl.innerHTML = '';
+    months.forEach(({ year, monthIndex, total }) => {
+      const isCurrent = year === current.getFullYear() && monthIndex === current.getMonth();
+      const li = document.createElement('li');
+      li.className = `history-row${isCurrent ? ' is-current' : ''}`;
+      li.innerHTML = `
+        <span class="history-row__month"></span>
+        <span class="history-row__amount tabular"></span>
+      `;
+      li.querySelector('.history-row__month').textContent = `${monthNames[monthIndex]} ${year}`;
+      li.querySelector('.history-row__amount').textContent = money(total);
+      historyListEl.appendChild(li);
+    });
   }
 
   function switchMonth(offset) {
