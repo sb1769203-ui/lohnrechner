@@ -11,6 +11,7 @@
   const prevMonthBtn = document.getElementById('prevMonth');
   const nextMonthBtn = document.getElementById('nextMonth');
   const offlineNote = document.getElementById('offlineNote');
+  const themeToggle = document.getElementById('themeToggle');
 
   const monthNames = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
   const money = (n) => (Number.isFinite(n) ? n : 0).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
@@ -42,6 +43,7 @@
     data.extras.forEach((extra, i) => {
       const li = document.createElement('li');
       li.innerHTML = `
+        <span class="extra-dot"></span>
         <span class="extra-name"></span>
         <span class="extra-amount tabular"></span>
         <button class="remove" aria-label="Eintrag entfernen">×</button>
@@ -58,13 +60,22 @@
     });
   }
 
+  let lastTotal = null;
+
   function renderTotals() {
     const rate = parseFloat(rateEl.value.replace(',', '.')) || 0;
     const hours = parseFloat(hoursEl.value.replace(',', '.')) || 0;
     const base = rate * hours;
     const extrasSum = data.extras.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+    const total = base + extrasSum;
     baseWageEl.textContent = money(base);
-    totalAmountEl.textContent = money(base + extrasSum);
+    totalAmountEl.textContent = money(total);
+    if (lastTotal !== null && lastTotal !== total) {
+      totalAmountEl.classList.remove('bump');
+      void totalAmountEl.offsetWidth;
+      totalAmountEl.classList.add('bump');
+    }
+    lastTotal = total;
   }
 
   function renderAll() {
@@ -108,6 +119,31 @@
 
   prevMonthBtn.addEventListener('click', () => switchMonth(-1));
   nextMonthBtn.addEventListener('click', () => switchMonth(1));
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0b0d1a' : '#f4f5fb');
+  }
+
+  function initTheme() {
+    const saved = localStorage.getItem('lohnrechner:theme');
+    if (saved) {
+      applyTheme(saved);
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    localStorage.setItem('lohnrechner:theme', next);
+  });
+
+  initTheme();
 
   function updateOfflineNote() {
     offlineNote.hidden = navigator.onLine;
