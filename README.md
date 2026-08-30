@@ -7,7 +7,7 @@ Eine moderne Web-App / Progressive Web App (PWA) zur einfachen Berechnung des Mo
 - 📅 **Monats- & Tagesverwaltung:** Detaillierte Tageseinträge und historische Monatsübersicht.
 - 🌗 **Dark / Light Mode:** Automatische oder manuelle Anpassung an das Design.
 - 📱 **PWA & Offline-Fähigkeit:** Service Worker zur schnellen Offline-Nutzung und Installation als App.
-- 🔊 **Sound-Feedback:** Sanfte Töne bei Interaktionen über die Web Audio API.
+- 🔇 **Stumm geschaltet:** Kein Ton beim Starten oder Klicken.
 
 ## Installation & Deployment
 1. Lade dieses Repository herunter oder klone es zu GitHub.
