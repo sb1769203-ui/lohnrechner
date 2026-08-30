@@ -186,44 +186,63 @@ body {
   letter-spacing: -0.01em;
 }
 
-.tabs {
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
   display: flex;
+  justify-content: center;
   gap: 6px;
-  padding: 2px;
-  margin: 4px 4px 2px;
-  background: var(--surface);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid var(--surface-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
+  padding:
+    10px
+    calc(env(safe-area-inset-right, 0px) + 14px)
+    calc(env(safe-area-inset-bottom, 0px) + 10px)
+    calc(env(safe-area-inset-left, 0px) + 14px);
+  background: var(--surface-solid);
+  border-top: 1px solid var(--surface-border);
+  box-shadow: 0 -8px 24px rgba(20, 22, 43, 0.10);
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 
-.tab-btn {
+.tabbar-btn {
   flex: 1;
+  max-width: 160px;
   appearance: none;
   border: none;
   background: transparent;
-  color: var(--text-soft);
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 13.5px;
-  font-weight: 600;
-  padding: 10px 0;
-  border-radius: calc(var(--radius-md) - 4px);
+  color: var(--text-faint);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 0 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.tab-btn.is-active {
-  color: #ffffff;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  box-shadow: 0 6px 16px var(--accent-1-soft);
+.tabbar-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tabbar-btn span {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tabbar-btn.is-active {
+  color: var(--accent-1);
 }
 
 .page {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  padding-bottom: 72px;
 }
 
 .block {
