@@ -17,6 +17,8 @@
   const progressFillEl = document.getElementById('progressFill');
   const paceNoteEl = document.getElementById('paceNote');
   const totalAmountEl = document.getElementById('totalAmount');
+  const targetLabelEl = document.getElementById('targetLabel');
+  const targetAmountEl = document.getElementById('targetAmount');
   const monthLabelEl = document.getElementById('monthLabel');
   const prevMonthBtn = document.getElementById('prevMonth');
   const nextMonthBtn = document.getElementById('nextMonth');
@@ -147,6 +149,15 @@
       totalAmountEl.classList.add('bump');
     }
     lastTotal = total;
+
+    if (targetHours > 0) {
+      const expectedTotal = (rate * targetHours) + extrasSum;
+      targetLabelEl.textContent = `Bei Zielerreichung (${hoursFmt(targetHours)})`;
+      targetAmountEl.textContent = money(expectedTotal);
+    } else {
+      targetLabelEl.textContent = 'Bei Zielerreichung';
+      targetAmountEl.textContent = '–';
+    }
 
     workedHoursEl.textContent = hoursFmt(workedHours);
     const remaining = Math.max(0, targetHours - workedHours);

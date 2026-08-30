@@ -444,6 +444,24 @@ body {
 .total__amount.bump { animation: bump 0.32s ease; }
 @keyframes bump { 30% { transform: scale(1.06); } }
 
+.total__target {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 22px 2px;
+}
+
+.total__target-label {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.total__target-amount {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+
 .progress-bar {
   height: 8px;
   border-radius: 999px;
