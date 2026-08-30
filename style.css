@@ -250,6 +250,10 @@ body {
   padding-bottom: 72px;
 }
 
+.page[hidden] {
+  display: none;
+}
+
 .block {
   background: var(--surface);
   backdrop-filter: blur(18px);
