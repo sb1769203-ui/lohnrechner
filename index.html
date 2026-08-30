@@ -37,23 +37,6 @@
   </header>
 
   <section class="block">
-    <div class="field">
-      <label for="rate">Stundenlohn</label>
-      <div class="field__input">
-        <input id="rate" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00">
-        <span class="unit">€/h</span>
-      </div>
-    </div>
-    <div class="field">
-      <label for="hours">Zielstunden (Monat)</label>
-      <div class="field__input">
-        <input id="hours" type="number" inputmode="decimal" step="0.25" min="0" placeholder="0">
-        <span class="unit">h</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="block">
     <h2 class="block__title">Fortschritt</h2>
     <div class="progress-bar"><div id="progressFill" class="progress-bar__fill"></div></div>
     <div class="progress-stats">
@@ -100,12 +83,30 @@
     </form>
   </section>
 
-  <div class="sheet__foot-spacer"></div>
-
   <section class="total">
     <div class="total__inner">
       <span class="total__label">Gesamt</span>
       <span id="totalAmount" class="total__amount tabular">0,00 €</span>
+    </div>
+  </section>
+
+  <div class="sheet__foot-spacer"></div>
+
+  <section class="block">
+    <h2 class="block__title">Stundenlohn</h2>
+    <div class="field">
+      <label for="rate">Stundenlohn</label>
+      <div class="field__input">
+        <input id="rate" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0,00">
+        <span class="unit">€/h</span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="hours">Zielstunden (Monat)</label>
+      <div class="field__input">
+        <input id="hours" type="number" inputmode="decimal" step="0.25" min="0" placeholder="0">
+        <span class="unit">h</span>
+      </div>
     </div>
   </section>
 
