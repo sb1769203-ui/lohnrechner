@@ -406,13 +406,16 @@ body {
 }
 
 .history-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid var(--surface-border);
 }
 .history-row:last-child { border-bottom: none; }
+
+.history-row__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
 .history-row__month {
   font-size: 14.5px;
@@ -428,6 +431,17 @@ body {
 .history-row__amount {
   font-size: 14.5px;
   font-weight: 600;
+}
+
+.history-row__breakdown {
+  display: flex;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.history-row__breakdown-item {
+  font-size: 11.5px;
+  color: var(--text-faint);
 }
 
 .extra-form {

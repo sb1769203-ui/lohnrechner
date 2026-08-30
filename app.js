@@ -245,23 +245,33 @@
       const rate = parseFloat(String(entry.rate ?? '').replace(',', '.')) || 0;
       const workedHours = Array.isArray(entry.days) ? entry.days.reduce((sum, d) => sum + (Number(d.hours) || 0), 0) : 0;
       const extrasSum = Array.isArray(entry.extras) ? entry.extras.reduce((sum, e) => sum + (Number(e.amount) || 0), 0) : 0;
-      const total = (rate * workedHours) + extrasSum;
+      const base = rate * workedHours;
+      const total = base + extrasSum;
       if (total <= 0) continue;
-      months.push({ year, monthIndex, total });
+      months.push({ year, monthIndex, base, extrasSum, total });
     }
     months.sort((a, b) => (b.year - a.year) || (b.monthIndex - a.monthIndex));
 
     historyListEl.innerHTML = '';
-    months.forEach(({ year, monthIndex, total }) => {
+    months.forEach(({ year, monthIndex, base, extrasSum, total }) => {
       const isCurrent = year === current.getFullYear() && monthIndex === current.getMonth();
       const li = document.createElement('li');
       li.className = `history-row${isCurrent ? ' is-current' : ''}`;
       li.innerHTML = `
-        <span class="history-row__month"></span>
-        <span class="history-row__amount tabular"></span>
+        <div class="history-row__top">
+          <span class="history-row__month"></span>
+          <span class="history-row__amount tabular"></span>
+        </div>
+        <div class="history-row__breakdown">
+          <span class="history-row__breakdown-item">Stundenlohn: <span class="tabular"></span></span>
+          <span class="history-row__breakdown-item">Provision: <span class="tabular"></span></span>
+        </div>
       `;
       li.querySelector('.history-row__month').textContent = `${monthNames[monthIndex]} ${year}`;
       li.querySelector('.history-row__amount').textContent = money(total);
+      const breakdownSpans = li.querySelectorAll('.history-row__breakdown-item .tabular');
+      breakdownSpans[0].textContent = money(base);
+      breakdownSpans[1].textContent = money(extrasSum);
       historyListEl.appendChild(li);
     });
   }
